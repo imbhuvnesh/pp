@@ -1,1 +1,1 @@
-web: python Rekha_crop_yield(1).py $PORT 
+web: gunicorn Rekha_crop-yield:app 

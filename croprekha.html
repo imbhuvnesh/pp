@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <style>
+        html{
+            min-height: 100%;
+        }
+        input[type=number] {
+
+            padding: 12px 20px;
+            margin: 4px 2px;
+            cursor: pointer;
+            border: 2px solid;
+            border-radius: 4px;
+            width: 115px;
+        }
+
+        body {
+            background-image: linear-gradient(#00b0f0,#00b050);
+            background-repeat: no-repeat;
+            height: 100%;
+            background-position: center;
+            background-size: cover;
+            font-family: sans-serif, cursive;
+        }
+
+        input[type=text] {
+            padding: 12px 20px;
+            margin: 4px 2px;
+            cursor: pointer;
+            border: 2px solid;
+            border-radius: 4px;
+        }
+
+        input[type=submit],
+        input[type=button] {
+            background-color: rgba(255, 0, 0, 0.8);
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        div {
+            float: center;
+            margin: auto;
+            /*width: 12%;*/
+            padding: 2px;
+        }
+
+        input[type=number] {
+
+            padding: 6px 20px;
+            margin: 4px 2px;
+            cursor: pointer;
+            border: 2px solid;
+            border-radius: 4px;
+            color : green;
+            font-size: x-large;
+        }
+
+        h1,
+        h3 {
+            text-align: center;
+        }
+        span#resultdata{
+            color: white;
+            font-size: 28px;
+            border: 3px solid black;
+
+        }
+        #labelcolor{
+            color:white;
+            font-size: 30px;
+            font-weight: bold
+        }
+
+    </style>
+    <title>Title</title>
+</head>
+
+<body>
+    <div>
+        <label for="f2_cal" id = "labelcolor">f2_cal:</label><br>
+
+        <input type="number" id="f2_cal" class="commonstyle" name="f2_cal" placeholder="1985-2020" value="1985" min=1985
+            max=2020>
+        <span id = "resultdata" >result</span>
+            <br>
+        <label for="f3_cal"  id = "labelcolor" >f3_cal:</label><br>
+        <input type="number" id="f3_cal" name="f3_cal" class="commonstyle" placeholder="1985-2020" value="1985" min=1985
+            max=2020>
+        <span id = "resultdata">result</span>
+
+            <br>
+        <label for="f1_val" id = "labelcolor" >f1_val:</label><br>
+        <input type="number" id="f1_val" name="f1_val" class="commonstyle" placeholder="1985-2020"  value="1985" min=1985
+            max=2020> 
+        <span id = "resultdata">result</span>
+
+             <br>
+        <label for="f2_val" id = "labelcolor" >f2_val:</label><br>
+        <input type="number" id="f2_val" name="f2_val" class="commonstyle" placeholder="1985-2020" value="1985" min=1985
+            max=2020>
+        <span id = "resultdata">result</span>
+
+            <br>
+        <label for="f3_val" id = "labelcolor" >f3_val:</label><br>
+        <input type="number" id="f3_val" name="f3_val" class="commonstyle" placeholder="1985-2020" value="1985" min=1985
+            max=2020>
+        <span id = "resultdata">result</span>
+
+            <br>
+        <input type="submit" value="Submit" onclick="onSubmit()">
+
+    </div>
+ 
+ <!-- none -->
+    <div  id= "table" style="display:none"> 
+        <table style="border: 5px solid black; text-align: center; ">
+            <tr>
+                <th></th>
+                <th>Calibration</th>
+                <th>Validation</th>
+            </tr>
+            <tr>
+                <td>F1</td>
+                <td>--</td>
+                <td id="f1val">$10000</td>
+            </tr>
+            <tr>
+                <td>F2</td>
+                <td id="f2cal">$80</td>
+                <td id="f2val">$8000</td>
+            </tr>
+            <tr>
+                <td>F3</td>
+                <td id="f3cal">$80</td>
+                <td id="f3val">$804</td>
+            </tr>
+        </table>
+    </div>
+    <script>
+
+        function onSubmit() {
+            let formjson = {};
+            let f2_cal = parseInt($('#f2_cal').val().trim())-1984  
+            let f3_cal = parseInt($("#f3_cal").val().trim())-1984
+            let f1_val = parseInt($("#f1_val").val().trim())-1984
+            let f2_val = parseInt($("#f2_val").val().trim())-1984
+            let f3_val = parseInt($("#f3_val").val().trim())-1984
+
+            formjson.f2_cal = f2_cal;
+            formjson.f3_cal = f3_cal;
+            formjson.f1_val = f1_val;
+            formjson.f2_val = f2_val;
+            formjson.f3_val = f3_val;
+            sendJsonToDatabase(formjson)
+
+        }
+
+        function sendJsonToDatabase(formjson) {
+
+            $.ajax({
+                async: true,
+                url: 'http://127.0.0.1:5000/calc',
+                type: 'POST',
+                data: JSON.stringify(formjson),
+                dataType: 'JSON',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                success: function (result) {
+
+                    resultdata[0].innerHTML = result.f2_yield_calib
+                    resultdata[1].innerHTML = result.f3_yield_calib
+                    resultdata[2].innerHTML = result.f1_yield_valid
+                    resultdata[3].innerHTML = result.f2_yield_valid
+                    resultdata[4].innerHTML = result.f3_yield_valid
+
+                    resultdata
+
+                }
+            });
+        }
+    </script>
+
+</body>
+
+</html>

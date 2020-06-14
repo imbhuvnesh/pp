@@ -70,13 +70,33 @@
         span#resultdata{
             color: white;
             font-size: 28px;
-            border: 3px solid black;
+            border: 3px solid white;
+            padding: 2px 5px 2px 5px;
 
         }
         #labelcolor{
             color:white;
             font-size: 30px;
-            font-weight: bold
+            font-weight: bold;
+        }
+        .label{
+            color: white;
+            font-size: 22px;
+            font-weight: bold;
+        }
+        .category_div{
+            display: inline;
+            padding: 2px 5px 2px 5px;
+            margin:auto;
+        }
+        .main{
+            margin: 20px 0px 10px 0px;
+            display: block;
+        }
+        #dropdown-div{
+            border: 2px solid white;
+            border-radius: 6px;
+            padding: 5px 0 5px 0;
         }
 
     </style>
@@ -84,35 +104,59 @@
 </head>
 
 <body>
-    <div>
+    <div id="dropdown-div">
+        <div class="category_div" id="category_div"><span class="label">State:<span/>
+            <select id="source" name="source" onchange="javascript: dynamicdropdown(this.options[this.selectedIndex].value);">
+            <option value="">Select state</option>
+            <option value="delhi">Delhi</option>
+            <option value="haryana">Haryana</option>
+            <option value="punjab">Punjab</option>
+            </select>
+        </div>
+        <div class="category_div" id="sub_category_div"><span class="label">City:<span/>
+            <script type="text/javascript" language="JavaScript">
+            document.write('<select name="status" id="status"><option value="">Select status</option></select>')
+            </script>
+        </div>
+        <div class="category_div" id="crop-category_div" ><span class="label">Crop:<span/>
+            <select id="source" name="source" onchange="javascript: dynamicdropdown(this.options[this.selectedIndex].value);">
+            <option value="">Select Crop</option>
+            <option value="wheat">Wheat</option>
+            <option value="mustard">Mustard</option>
+            <option value="maize">Maize</option>
+            </select>
+        </div>
+    </div>
+    
+    <div class="main">
         <label for="f2_cal" id = "labelcolor">f2_cal:</label><br>
 
         <input type="number" id="f2_cal" class="commonstyle" name="f2_cal" placeholder="1985-2020" value="1985" min=1985
             max=2020>
-        <span id = "resultdata" >result</span>
+        <span id = "resultdata" >Result</span>
             <br>
         <label for="f3_cal"  id = "labelcolor" >f3_cal:</label><br>
         <input type="number" id="f3_cal" name="f3_cal" class="commonstyle" placeholder="1985-2020" value="1985" min=1985
             max=2020>
-        <span id = "resultdata">result</span>
+        <span id = "resultdata">Result</span>
 
             <br>
         <label for="f1_val" id = "labelcolor" >f1_val:</label><br>
         <input type="number" id="f1_val" name="f1_val" class="commonstyle" placeholder="1985-2020"  value="1985" min=1985
             max=2020> 
-        <span id = "resultdata">result</span>
+        <span id = "resultdata">Result</span>
 
              <br>
         <label for="f2_val" id = "labelcolor" >f2_val:</label><br>
         <input type="number" id="f2_val" name="f2_val" class="commonstyle" placeholder="1985-2020" value="1985" min=1985
             max=2020>
-        <span id = "resultdata">result</span>
+        <span id = "resultdata">Result</span>
 
             <br>
         <label for="f3_val" id = "labelcolor" >f3_val:</label><br>
         <input type="number" id="f3_val" name="f3_val" class="commonstyle" placeholder="1985-2020" value="1985" min=1985
             max=2020>
-        <span id = "resultdata">result</span>
+        <span id = "resultdata">Result</span>
 
             <br>
         <input type="submit" value="Submit" onclick="onSubmit()">
@@ -145,7 +189,38 @@
         </table>
     </div>
     <script>
-
+        function dynamicdropdown(listindex)
+        {
+            switch (listindex)
+            {
+            case "delhi" :
+                document.getElementById("status").options[0]=new Option("Select City","");
+                document.getElementById("status").options[1]=new Option("Delhi HO","delhi-ho");
+                document.getElementById("status").options[2]=new Option("East Delhi","east-delhi");
+                document.getElementById("status").options[3]=new Option("South Delhi","south-delhi");
+                document.getElementById("status").options[4]=new Option("North Delhi","north-delhi");
+                document.getElementById("status").options[5]=new Option("West Delhi","west-delhi");
+                break;
+            case "haryana" :
+                document.getElementById("status").options[0]=new Option("Select City","");
+                document.getElementById("status").options[1]=new Option("Haryana BO","haryana-bo");
+                document.getElementById("status").options[2]=new Option("Karnal","karnal");
+                document.getElementById("status").options[3]=new Option("Hissar","hissar");
+                document.getElementById("status").options[4]=new Option("","");
+                document.getElementById("status").options[5]=new Option("","");
+                break;
+            case "punjab" :
+                document.getElementById("status").options[0]=new Option("Select City","");
+                document.getElementById("status").options[1]=new Option("Punajb BO","punjab-bo");
+                document.getElementById("status").options[2]=new Option("Patiala","patiala");
+                document.getElementById("status").options[3]=new Option("Amritsar","amritsar");
+                document.getElementById("status").options[4]=new Option("","");
+                document.getElementById("status").options[5]=new Option("","");
+                break;
+            }
+            
+            return true;
+        }
         function onSubmit() {
             let formjson = {};
             let f2_cal = parseInt($('#f2_cal').val().trim())-1984  
